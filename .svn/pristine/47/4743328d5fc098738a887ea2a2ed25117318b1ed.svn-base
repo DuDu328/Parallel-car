@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>端API</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/product-detail.css"/>
+</head>
+<body>
+    <div id="detail">
+    	<div class="banner">
+    		<h2>
+    			<span class="back" @click="goBack()"><img src="../../image/back.png"></span>
+    			<span class="call"><img src="../../image/telephone.png" alt=""></span>
+    		</h2>
+    		<div class="companyrofile">
+    			<p><span class="f16 text-white">{{company}}</span></p>
+    			<p><span class="company-msg"><img src="../../image/dingwei.png" alt=""></span>天津港保税区国际汽车城二楼D22</p>
+    		</div>
+    		<div class="choose-menu">
+	            <p><span class="pro-car">{{brandName}}</span> <span class="arrow" @click="getArand()"></span></p>
+	            <p><span class="pro-car">{{carName}}</span> <span class="arrow" :disabled="disableds" @click="chooseCar()"></span></p>
+	        </div>
+    	</div>
+    	<div class="searchResult productList">
+            <div v-if="Input===0" v-for="(car,index) in brand">
+                <ul class="resultList" v-for="(res,_index) in car.car">
+                    <li v-for="(items,indux) in res.models" @click="inDetail(items)">
+                        <h3 class="title nobr">{{items.edition}} {{car.name}} {{res.name}} {{items.type}} {{items.displacement}} {{items.year}}款 {{items.seat}}座 {{items.color}}</h3>
+                        <p class="address" v-if="items.address===null">未发布</p>
+                        <p class="address text-gray" v-else>{{items.address}}</p>
+                        <p class="company" v-if="items.company===null">未发布</p>
+                        <p class="company text-gray" v-else>{{items.company}}</p>
+                        <div class="price" v-if="items.price===null">未定价</div>
+                        <div class="price text-gray" v-else>¥{{items.price}}万</div>
+                        <div class="time" v-if="items.shelfTime===null">未发布</div>    
+                        <div class="time text-gray" v-else>{{items.shelfTime}}</div>    
+                    </li>
+                </ul>
+            </div>  
+            <ul class="resultList" v-if="Input===1" v-for="res in choseBrand">
+                <li v-for="items in res.models" @click="inDetail(items)">
+                    <h3 class="title nobr">{{items.edition}} {{items.type}} {{items.displacement}} {{items.year}}款 {{items.seat}}座 {{items.color}}</h3>
+                    <p class="address" v-if="items.address===null">未发布</p>
+                    <p class="address text-gray" v-else>{{items.address}}</p>
+                    <p class="company" v-if="items.company===null">未发布</p>
+                    <p class="company text-gray" v-else>{{items.company}}</p>
+                    <div class="price" v-if="items.price===null">未定价</div>
+                    <div class="price text-gray" v-else>¥{{items.price}}万</div>
+                    <div class="time" v-if="items.shelfTime===null">未发布</div>
+                    <div class="time text-gray" v-else>{{items.shelfTime}}</div>    
+                </li>
+            </ul>
+            <ul class="resultList" v-if="Input===2">
+                <li v-for="items in carList" @click="inDetail(items)">
+                    <h3 class="title nobr">{{items.edition}} {{items.type}} {{items.displacement}} {{items.year}}款 {{items.seat}}座 {{items.color}}</h3>
+                    <p class="address" v-if="items.address===null">未发布</p>
+                    <p class="address text-gray" v-else>{{items.address}}</p>
+                    <p class="company" v-if="items.company===null">未发布</p>
+                    <p class="company text-gray" v-else>{{items.company}}</p>
+                    <div class="price" v-if="items.price===null">未定价</div>
+                    <div class="price text-gray" v-else>¥{{items.price}}万</div>
+                    <div class="time" v-if="items.shelfTime===null">未发布</div>    
+                    <div class="time text-gray" v-else>{{items.shelfTime}}</div>    
+                </li>
+            </ul>
+        </div>
+        <!-- 品牌 -->
+        <div class="mark" v-if="show"></div>
+        <div class="detail-result" v-if="show">
+            <h2>全部车型<span></span></h2>
+            <ul>
+                <li v-for="item in brand" @click="getCar(item.car,item.name)"><img :src="item.logo" alt="">{{item.name}}</li>
+            </ul>
+        </div>
+        <div class="mark" v-if="hide"></div>
+        <div class="detail-result" v-if="hide">
+            <h2>全部车系<span></span></h2>
+            <ul>
+                <li v-for="item in choseBrand" @click="getCars(item.models,item.name)">{{item.name}}</li>
+            </ul>
+        </div>    
+    </div>
+	<script type="text/javascript" src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+    <script type="text/javascript">
+    	apiready = function(){
+    		new Vue({
+    			el: '#detail',
+    			data: {
+                    brandName: '选品牌',
+                    carName: '选车系',
+    				product: null,
+    				company: '',
+    				Id: 0,
+                    brand: null,
+                    show: false,
+                    hide: false,
+                    disableds: false,
+                    choseBrand: null,
+                    Input: 0,
+                    carList: [],
+                    num: 0
+    			},
+                beforeCreate: function () {
+                    this.brand = null
+                    this.$http.post('http://172.10.1.63:8000/brand', {
+                    // this.$http.post('http://192.168.0.109:8000/brand', {
+                        id: this.Id
+                    }).then(function (res) {
+                        this.brand = res.data.brand
+                    })
+                },
+    			beforeMount: function() {
+    				this.product = api.pageParam.name
+    				this.company = api.pageParam.company
+		    	    this.Id = api.pageParam.Id
+    			},
+    			methods: {
+                    // 获取所有的车源信息--品牌
+                    getArand: function () {
+                        this.show = true
+                    },
+                    // 选择完品牌
+                    getCar: function (cars, Name) {
+                        this.brandName = Name
+                        this.disableds = true
+                        this.show = false
+                        this.hide = false
+                        this.choseBrand = cars
+                        this.Input = 1
+                    },
+                    // 选择车系
+                    getCars: function (models, Name) {
+                        this.Input = 2
+                        this.carName = Name
+                        this.carList = models
+                        this.hide = false
+                    },
+                    chooseCar: function () {
+                        this.brandName = this.brandName
+                        this.carName = this.carName
+                        this.hide = true
+                    },
+                    inDetail: function (items) {
+                        api.openWin({
+                            name: 'pageDetail',
+                            url: './pageDetail.html',
+                            pageParam: {
+                                name: 'pageDetail',
+                                data: items
+                            }
+                        });
+                    },
+                    goBack: function () {
+                        api.closeWin({
+                            name: 'product-detail'
+                        });
+                    }
+                }
+    		})
+    	}
+    </script>
+</body>
+</html>

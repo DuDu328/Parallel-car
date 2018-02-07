@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>查找车源</title>
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/public.css">
+    <link rel="stylesheet" href="../../css/realease-car.css">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+    <link rel="stylesheet" href="../../css/swiper-4.1.0.min.css">
+    <script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue-resource/1.3.4/vue-resource.js"></script>
+    <script src="../../script/swiper-4.1.0.min.js"></script>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <div class="header">
+            <img style="height:17px;margin-left:10px" src="../../image/btn_return.png" alt="" @click="goBack()">
+            <span style="margin-left:120px">查找车源</span>
+        </div>
+
+        <div class='title'>
+            <div @click="upPicture(carDetail.img)" class="banner pt20">
+                <img class="title-img" src="../../image/icon_addpic.png" alt="">
+                <p class="mt5">上传图片</p>
+            </div>
+        </div>
+        <div class="choose">
+            <div v-if="carDetail.title" class="caption f14">
+                <p>{{carDetail.title}}</p>
+                <p class="money f16">￥{{carDetail.price}}万</p>   
+            </div>
+            <div @click="chooseAera(carDetail.area,areaList)" class="single-choose single-choose1">
+                <span >城市</span>
+                <span v-for="area in areaList" v-if="carDetail.area === area.id" class="text-888 ml50">{{area.name}}</span>
+                <img class="go" src="../../image/btn_right.png" alt="">
+            </div>
+            <div @click="chooseBrand(carDetail.brandCode,brandList)" class="single-choose single-choose1">
+                <span >品牌</span>
+                <span v-for="brand in brandList" v-if="brand.id === carDetail.brandCode" class="text-888 ml50">{{brand.name}}</span>
+                <img class="go" src="../../image/btn_right.png" alt="">
+            </div>
+            <div @click="chooseType(carDetail.type,typeList)" class="single-choose single-choose1">
+                <span >车型</span>
+                <span v-for="type in typeList" v-if="type.id === carDetail.type" class="text-888 ml50">{{type.name}}</span>
+                <img class="go" src="../../image/btn_right.png" alt="">
+            </div>
+            <div @click="chooseYear(carDetail.year,yearList)" class="single-choose single-choose1">
+                <span >年代</span>
+                <span v-for="year in yearList" v-if="year.name === carDetail.year" class="text-888 ml50">{{year.name}}</span>
+                <img class="go" src="../../image/btn_right.png" alt="">
+            </div>
+            <div @click="chooseVersion(carDetail.version,versionList)" class="single-choose single-choose1">
+                <span >版本</span>
+                <span v-for="version in versionList" v-if="version.id === carDetail.version" class="text-888 ml50">{{version.name}}</span>
+                <img class="go" src="../../image/btn_right.png" alt="">
+            </div>
+            <div @click="chooseStatus(carDetail.status,statusList)" class="single-choose single-choose1">
+                <span >状态</span>
+                <span v-for="status in statusList" v-if="status.id === carDetail.status" class="text-888 ml50">{{status.name}}</span>
+                <img class="go" src="../../image/btn_right.png" alt="">
+            </div>
+            <div class="single-choose single-choose2">
+                <span>排量(选填)</span>
+                <input placeholder="排量" class="text-888 ml20 bgn otn"/>
+            </div>
+            <div class="single-choose single-choose2">
+                <span>颜色(选填)</span>
+                <input placeholder="颜色" class="text-888 ml20 bgn otn"/>
+            </div>
+            <div class="single-choose single-choose2">
+                <span>参考价格</span>
+                <input placeholder="￥0.00万" :value=carDetail.price class="text-888 ml30 bgn otn"/>万
+            </div>
+            <div @click="chooseGetType(carDetail.getType,carDetail.addPrice,carDetail.somePrice,getTypeList)" class="single-choose">
+                <span >提车方式</span>
+                <span v-for="getType in getTypeList" v-if="getType.id === carDetail.getType" class="text-888 ml30">{{getType.name}}: {{carDetail.addPrice}}{{carDetail.somePrice}}</span>
+                <img class="go" src="../../image/btn_right.png" alt="">
+            </div>
+            <div class="single-choose single-choose2">
+                <span >配置说明</span>
+                <span class="text-888 ml20"></span>
+                <img class="go" src="../../image/btn_right.png" alt="">
+            </div>
+            <span class="realease">立即发布</span>
+            <span class="save">存草稿</span>
+        </div>
+    </div>
+    <script>
+        apiready = function(){
+            new Vue({
+                el: '#app',
+                data: {
+                    message: 'Hello Vue.js!',
+                    carDetail: {
+                    },
+                    areaList: [],
+                    brandList: [],
+                    yearList: [],
+                    versionList: [],
+                    statusList: [],
+                    getTypeList: [],
+                    typeList: [],
+                    eventHub: new Vue(),
+                },
+
+                created: function(e) {
+                    console.log("ss")
+                    this.$http.post('http://172.10.1.45:8000/fabu').then(
+                        function(res){
+                            console.log(res)
+                            this.carDetail = res.data.carDetail
+                            this.carDetail.price = res.data.carDetail.price / 10000
+                            this.areaList = res.data.areaList;
+                            this.brandList = res.data.brandList;
+                            this.yearList = res.data.yearList;
+                            this.versionList = res.data.versionList;
+                            this.statusList = res.data.statusList;
+                            this.getTypeList = res.data.getTypeList;
+                            this.$http.post('http://172.10.1.45:8000/type',{
+                                brand: this.carDetail.brandCode
+                            }).then(
+                            function(res){
+                                this.typeList = res.data.typeList;
+                            },function(res){  
+                                console.log(res)  
+                            });
+                        },function(res){  
+                            console.log(res)  
+                        });
+
+                },
+                mounted: function(e) {
+                    var that = this;
+                    api.addEventListener({
+                        name: 'area'
+                    }, function(ret, err) {
+                        that.carDetail.area = ret.value.area;
+                    });
+
+                    api.addEventListener({
+                        name: 'brandCode'
+                    }, function(ret, err) {
+                        that.carDetail.brandCode = ret.value.brandCode;
+                        if(ret.value.typeList) {
+                            that.typeList = ret.value.typeList
+                        }
+                    });
+
+                    api.addEventListener({
+                        name: 'type'
+                    }, function(ret, err) {
+                        that.carDetail.type = ret.value.type; 
+                    });
+                    api.addEventListener({
+                        name: 'year'
+                    }, function(ret, err) {
+                        that.carDetail.year = ret.value.year; 
+                    });
+                    api.addEventListener({
+                        name: 'version'
+                    }, function(ret, err) {
+                        that.carDetail.version = ret.value.version; 
+                    });
+                    api.addEventListener({
+                        name: 'status'
+                    }, function(ret, err) {
+                        that.carDetail.status = ret.value.status; 
+                    });
+                    api.addEventListener({
+                        name: 'getType'
+                    }, function(ret, err) {
+                        that.carDetail.getType = ret.value.getType;
+                        that.carDetail.addPrice = ret.value.addPrice;
+                        that.carDetail.somePrice = ret.value.somePrice;
+                    });
+                    api.addEventListener({
+                        name: 'img'
+                    }, function(ret, err) {
+                        that.carDetail.img = ret.value.img
+
+                    });
+                },
+                methods: {
+                    upPicture: function(img) {
+                        api.openFrame({
+                            name: 'choose',
+                            url: './upPicture.html',
+                            pageParam: {
+                                img: img
+                            }
+                        });    
+                    },     
+                    chooseAera: function(value,list) {
+                        api.openFrame({
+                            name: 'choose',
+                            url: './chooseAera.html',
+                            pageParam: {
+                                value: value,
+                                list: list
+                            }
+                        });
+                    },
+                    chooseBrand: function(value,list) {
+                        api.openFrame({
+                            name: 'choose',
+                            url: './chooseBrand.html',
+                            pageParam: {
+                                value: value,
+                                list: list
+                            }
+                        });
+                    },
+                    chooseType: function(value,list) {
+                        api.openFrame({
+                            name: 'choose',
+                            url: './chooseType.html',
+                            pageParam: {
+                                value: value,
+                                list: list
+                            }
+                        });
+                    },
+                    chooseYear: function(value,list) {
+                        api.openFrame({
+                            name: 'choose',
+                            url: './chooseYear.html',
+                            pageParam: {
+                                value: value,
+                                list: list
+                            }
+                        });
+                    },
+                    chooseVersion: function(value,list) {
+                        api.openFrame({
+                            name: 'choose',
+                            url: './chooseVersion.html',
+                            pageParam: {
+                                value: value,
+                                list: list
+                            }
+                        });
+                    },
+                    chooseStatus: function(value,list) {
+                        api.openFrame({
+                            name: 'choose',
+                            url: './chooseStatus.html',
+                            pageParam: {
+                                value: value,
+                                list: list
+                            }
+                        });
+                    },
+                    chooseGetType: function(value,addPrice,somePrice,list) {
+                        api.openFrame({
+                            name: 'choose',
+                            url: './chooseGetType.html',
+                            pageParam: {
+                                value: value,
+                                addPrice: addPrice,
+                                somePrice: somePrice,
+                                list: list
+                            }
+                        });
+                    },
+                    goBack: function () {
+                        api.closeWin({
+                            name: 'realease-car'
+                        });
+                    }
+                }
+            })
+}
+
+var upload = function(c, d){
+    "use strict";
+    var $c = document.querySelector(c),
+    $d = document.querySelector(d),
+    file = $c.files[0],
+    reader = new FileReader();
+    reader.onload = function(e){
+        alert(e.target.result)
+        $d.setAttribute("src", e.target.result);
+    };
+};
+</script>
+</body>
+</html>

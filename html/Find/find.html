@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>云API</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/home.css"/>
+</head>
+<body>
+    <div id="Home">
+        <header class="header">
+            <span class="back" @click="goBack()"><img src="../../image/back.png"></span>
+            <span>找车</span>
+        </header>
+        <div class="content">
+            <div class="list-left">
+                <ul>
+                    <li v-for="(items, index) in brand" v-if="" @click="getCarList(items.car,index)" :class={active:index==carIndex}>
+                        <span><img :src="items.logo" alt=""></span>
+                        {{items.name}}
+                    </li>
+                </ul>
+            </div>
+            <div class="list-right">
+                <div class="carlist">
+                    <dl v-for="res in carList" @click="goMain(res.models)">
+                        <dt><img :src="res.imgSrc" alt=""></dt>
+                        <dd>{{res.name}}</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+    <script type="text/javascript">
+        apiready = function () {
+            new Vue({
+                el: '#Home',
+                data: {
+                    brand: [],
+                    carList: [],
+                    Id: 0,
+                    carIndex: 0
+                },
+                mounted: function () {
+                    //  如果缓存中存在品牌ID
+                    if (api.pageParam.ID) {
+                        this.carIndex = api.pageParam.ID
+                        this.$http.post('http://172.10.1.63:8000/brand', {
+                        // this.$http.post('http://192.168.0.109:8000/brand', {
+                            id: this.Id
+                        }).then(function (res) {
+                            this.brand = res.data.brand
+                            this.carList = this.brand[api.pageParam.ID].car
+                        })
+                    } else {
+                        this.$http.post('http://172.10.1.63:8000/brand', {
+                        // this.$http.post('http://192.168.0.109:8000/brand', {
+                            id: this.Id
+                        }).then(function (res) {
+                            this.brand = res.data.brand
+                            this.carList = this.brand[0].car
+                        })
+                    }
+                },
+                methods: {
+                    getCarList: function (cars, _index) {
+                        this.carList = cars
+                        this.carIndex = _index
+                    },
+                    goMain: function () {
+                        api.openWin({
+                            name: 'main',
+                            url: './main.html',
+                            pageParam: {
+                                
+                            }
+                        });
+                    },
+                    goBack: function () {
+                        api.closeWin({
+                            name: 'home'
+                        });
+                    }
+                }
+            })
+
+        }
+    </script>
+</body>
+</html>

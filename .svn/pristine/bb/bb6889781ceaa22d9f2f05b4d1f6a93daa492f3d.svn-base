@@ -1,0 +1,217 @@
+#app {
+	background: url(../image/login_bg.png) no-repeat;
+	background-size: cover;
+	width: 100%;
+	height: 100%
+}
+
+.header {
+	background-color: #7e538a;
+	height: 50px;
+	color: white;
+	line-height: 50px;
+}
+
+.logo {
+	width: 67px;
+	height: 67px;
+	margin-left: 147px;
+	margin-top: 40px;
+}
+
+.logo-img {
+	width: 67px;
+	height: 67px;	
+}
+
+.user-cont {
+	padding: 0px 40px;
+	margin-top: 70px;
+	/*height: 100px;*/
+}
+
+.user-cont img {
+	width: 23px;
+	height: 24px;
+}
+.user-cont input {
+	color: white;
+	font-size: 15px;
+	height: 49px;
+	line-height: 49px;
+	outline: none;
+	padding-left: 5px;
+	padding-bottom: 3px;
+}
+
+.user-cont div {
+	height: 49px;
+	border-bottom: 1px solid #fff;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	/*line-height: 49px;*/
+}
+
+.user-cont input::-webkit-input-placeholder {
+	color: #fff;
+}
+
+
+.user-cont span {
+	right: 40px;
+	color: #ffb50d;
+	font-size: 12px;
+	position: absolute;
+	margin-top: 5px;
+}
+.user-pass span {
+	right: 0px;
+	color: #ffb50d;
+	font-size: 15px;
+}
+
+.user-cont button {
+	color: white;
+	height: 45px;
+	width: 100%;
+	background-color: #f79710;
+	line-height: 45px;
+	text-align: center;
+	margin-top: 50px;
+}
+
+.shandow {
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.4);
+	z-index: 1;
+	position: fixed;
+	top: 0px;
+}
+
+.img-code {
+	background-color: #fff;
+	width: 282px;
+	height: 175px;
+	position: fixed;
+	top: 230px;
+	left: 40px;
+	z-index: 2;
+	border-radius: 5px;
+	text-align: center;
+	font-size: 18px;
+}
+
+.img-code span{
+	margin-top: 18px;
+}
+
+.input-code {
+	height: 43px;
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	margin:0px 25px;
+	align-items: center;
+	border-bottom: 1px solid #b3b3b3;
+}
+.input-code img {
+	width: 90px;
+	height: 30px;
+}
+
+.input-code input {
+	width: 80px;
+	font-size: 13px;
+	color: #000;
+	outline: none;
+} 
+.img-code button{
+	width: 230px;
+	height: 40px;
+	background-color: #f79710;
+	margin-top: 30px;
+	text-align: center;
+	line-height: 40px;
+}
+
+.go-regest {
+	text-align: center;
+	margin-top: 100px; 
+}
+
+#forget {
+	height: 100%;
+	width: 100%;
+}
+
+.set-forget {
+	margin-top: 10px;
+	padding: 0px 12px;
+	background-color: #fff
+}
+
+.set-forget img {
+	width: 23px;
+	height: 24px;
+}
+.set-forget input {
+	font-size: 15px;
+	height: 49px;
+	line-height: 49px;
+	outline: none;
+	padding-left: 5px;
+	padding-bottom: 3px;
+}
+
+.set-forget div {
+	height: 49px;
+	/*border-bottom: 1px solid #c1c1c1;*/
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	/*line-height: 49px;*/
+}
+
+#forget button {
+	width: 340px;
+	height: 40px;
+	background-color: #d3d3d3;
+	margin-top: 30px;
+	margin-left: 10px;
+	text-align: center;
+	line-height: 40px;
+	outline: none;
+}
+
+#forget .img-code button{
+	width: 230px;
+	height: 40px;
+	background-color: #f79710;
+	margin-top: 30px;
+	text-align: center;
+	line-height: 40px;
+	margin-left: 0px;
+}
+
+.set-forget .user-name {
+	border-bottom: 1px solid #C1C1C1;
+}
+
+.set-pass {
+	height: 50px;
+	margin-top: 10px;
+	line-height: 50px;
+	background-color: #fff;
+	font-size: 15px;
+	padding-left: 10px;
+}
+
+.set-pass input{
+	font-size: 15px;
+	outline: none;
+	margin-left: 5px;
+	padding-left: 5px;
+}
+

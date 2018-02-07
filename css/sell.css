@@ -1,0 +1,84 @@
+.sell-head-main{
+	background: #7e538a;
+}
+.sell-head{
+	width:62%;
+	height: 50px;
+	line-height: 50px;
+	font-size:16px;
+	margin:0 auto;
+}
+.sell-head li{
+	float:left;
+	width:50%;
+	text-align: center;
+	color:#fff;
+	height:46px;
+}
+.sell-head li span{
+	display: inline-block;
+	height:100%;
+}
+
+.sell-head li.on span{
+	border-bottom:solid 1px #fff
+}
+.pub-text{
+	font-size:12px; color:#666; padding:10px 0 10px 0;
+	padding-left:3%;
+}
+.pub-cont{
+	width:100%;
+	margin:0 auto;
+	height:72%;
+	overflow-y: scroll;
+	position: fixed;
+	top:142px;
+
+}
+.pub-list{
+		width:94%;
+		margin:0 auto;
+}
+.pub-list dl{
+	border-top:solid 1px #eaeaea;
+	clear:both;
+	overflow: hidden;
+	padding:12px 0;
+
+}
+.pub-list dl dt,.pub-list dl dd{
+	font-size:14px;
+	clear:both;
+	overflow: hidden;
+	/*font-weight:bold;*/
+}
+.pub-list dl dt .pub-tit{
+	float:left;
+	width:70%;
+	font-size:15px;
+
+}
+.pub-list dl dt .pub-money{
+	float:right;
+	/*width:28%;*/
+	color:#f08307;
+
+}
+.pub-list dl dd{
+	color:#666;
+	padding-top: 10px;
+	font-size:12px;
+}
+.pub-list dl dd .pub-seat{
+	float:left;
+	width:70%;
+}
+.pub-list dl dd .pub-date{
+	float:right;
+	/*width:30%;*/
+}
+.fiexed{
+	position: fixed;
+	width:100%;
+}

@@ -1,0 +1,212 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/find-car.css">
+
+</head>
+<body>
+	<div class="main1" id="findcar">
+		<div class="left">
+           <ul class="list-brand">
+           	<!-- <li class="active"><img src="../image/icon-logo2.png"> 丰田 </li> -->
+           	<li v-for="(brand,index) in brands" v-bind:class="{'active':index==curIndex}" @click="getType(index)"><img :src=brand.imgsrc> {{brand.brandName}} </li>
+           	
+           </ul>    
+	   </div>
+	   <div class="right">
+	       <div class="list-type">
+	       	  <dl v-for="(list,index) in lists" @click="goPage1(list,index)">
+	       	  	<dt><img :src="list.imgsrc"></dt>
+	       	  	<dd>{{list.typeName}}</dd>
+	       	  </dl>
+	       </div>
+	       <div class="list-type">
+	       	  <dl @click="goPage(list,index)">
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl>
+	       	  <dl>
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl><dl @click="goPage(list,index)">
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl>
+	       	  <dl>
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl><dl @click="goPage(list,index)">
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl>
+	       	  <dl>
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl><dl @click="goPage(list,index)">
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl>
+	       	  <dl>
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl><dl @click="goPage(list,index)">
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl>
+	       	  <dl>
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl><dl @click="goPage(list,index)">
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl>
+	       	  <dl>
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl><dl @click="goPage(list,index)">
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl>
+	       	  <dl>
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl><dl @click="goPage(list,index)">
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl>
+	       	  <dl>
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl><dl @click="goPage(list,index)">
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl>
+	       	  <dl>
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl><dl @click="goPage(list,index)">
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl>
+	       	  <dl>
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl><dl @click="goPage(list,index)">
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl>
+	       	  <dl>
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl><dl @click="goPage(list,index)">
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl>
+	       	  <dl>
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl><dl @click="goPage(list,index)">
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl>
+	       	  <dl>
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl><dl @click="goPage(list,index)">
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl>
+	       	  <dl>
+	       	  	<dt><img src="../image/bg1.png"></dt>
+	       	  	<dd>宝马7系</dd>
+	       	  </dl>
+	       	  
+	       </div>
+	       
+	   </div>
+	</div>
+	  
+</body>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+
+    apiready = function(){
+
+    	$vue = new Vue({
+    		el:'#findcar',
+    		data:{
+    			lists:[],
+    			brands:[],
+    			curIndex:0,
+    			chooseBrandId:'',
+    			typeName:''
+			},
+			mounted:function(){
+				this.showList()
+				this.showBrands()
+			},
+			updated: function(){
+				this.chooseBrandName = this.brands[0]
+			},
+			methods:{
+				showList: function(){
+					// this.$http.get('http://localhost:3001/typelist?brandId='+this.chooseBrandId).then(
+					this.$http.post('http://172.10.1.14:3001/typelist',{'brandId':this.chooseBrandId}).then(
+						function(res){
+						this.lists = res.data.list
+						console.log('typeList',this.lists)
+						// console.log('parame', parame)
+					},function(msg){
+						console.log(msg)
+					})
+				},
+				showBrands:function(){
+					// this.$http.get('http://localhost:3001/branda').then(function(res){
+					this.$http.post('http://172.10.1.14:3001/branda').then(function(res){
+						this.brands = res.data.list
+						console.log('brand',this.brands[0])
+					},function(msg){
+						console.log(msg)
+					})
+				},
+				getType:function(index){
+					this.curIndex = index
+					
+					console.log(this.curIndex)
+					this.chooseBrandId = this.brands[this.curIndex].brandId
+					console.log(this.chooseBrandId)
+					this.showList()
+				},
+				// goPage:function(typeList,index){
+				// 	console.log(typeList.typeName)
+				// 	// location.href="./sell.html?typeName="+typeList.typeName
+				// 	api.openWin({
+				// 		name:'sell',
+				// 		url:'./sell.html'
+				// 	})
+				// },
+				goPage1:function(list,index){
+					alert(list.seriesId)
+					api.openWin({
+						name:'complain',
+						url: './complain.html',
+						pageParam:{
+							seriesId: list.seriesId
+						}
+					})
+				}
+    		}
+    	})
+			
+			
+    };
+</script>
+</html>

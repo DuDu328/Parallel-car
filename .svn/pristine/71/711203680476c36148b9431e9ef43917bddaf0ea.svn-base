@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>端API</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/pageDetail.css"/>
+</head>
+<body>
+    <div id="page">
+        <header class="header">
+            <span class="back" @click="goBack()"><img src="../../image/back.png"></span>
+            <span>详情</span>
+            <span class="Complaint" @click="goComplaint()">投诉反馈</span>
+        </header>
+        <div class="wrap">
+            <div class="page-title mt10">
+                <h2>{{datas.edition}} {{datas.year}}款 {{name}} {{datas.type}} {{datas.seat}}座 {{datas.color}}</h2>
+                <p>
+                    <span class="price" v-if="datas.price==null">未定价</span>
+                    <span class="price" v-else>¥{{datas.price}}万</span>
+                    <span class="time"></span>
+                </p>
+            </div>
+            <div class="info mt10">
+                <h3><img src="../../image/file.png" alt="" class="files">车辆信息</h3>
+                <ul>
+                    <li>
+                        <b>年代</b>
+                        <span v-if="datas.year===null">未知</span>   
+                        <span v-else>{{datas.year}}</span>   
+                    </li>
+                    <li>
+                        <b>版本</b>
+                        <span v-if="datas.edition===null">未知</span>   
+                        <span v-else>{{datas.edition}}</span>   
+                    </li>
+                    <li>
+                        <b>颜色</b>
+                        <span v-if="datas.color===null">未知</span>   
+                        <span v-else>{{datas.color}}</span>   
+                    </li>
+                    <li>
+                        <b>排量</b>
+                        <span v-if="datas.displacement===null">未知</span>   
+                        <span v-else>{{datas.displacement}}</span>   
+                    </li>
+                    <li>
+                        <b>所在地</b>
+                        <span v-if="datas.address===null">未知</span>
+                        <span v-else>{{datas.address}}</span>   
+                    </li>
+                    <li>
+                        <b>状态</b>
+                        <span v-if="datas.status==1">在途</span>   
+                        <span v-if="datas.status==0">在途</span>   
+                    </li>
+                    <li>
+                        <b>提车方式</b>
+                        <span v-if="datas.mode==1">全额支付</span>   
+                        <span v-if="datas.mode==0">30%定金</span>   
+                    </li>
+                </ul>
+            </div>
+            <div class="banner mt10">
+                <dl>
+                    <dt><img :src=datas.img alt=""></dt>
+                    <dd>(实景图)</dd>
+                </dl>
+                <p>说明：手动豪华版，想买加价！</p>
+            </div>
+            <div class="company-address mt10">
+                <dl @click="goCompany()">
+                    <dt><img src="../../image/house.png" alt=""></dt>
+                    <dd>
+                        <h3>{{datas.company}}</h3>
+                        <p>在售车源</p>
+                    </dd>
+                </dl>
+                <img src="../../image/btn_right.png" alt="">
+            </div>
+            <div class="callBtn"><span><img src="../../image/telephone.png" alt="">打电话</span></div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+    <script type="text/javascript">
+        apiready = function(){
+            new Vue({
+                el: '#page',
+                data: {
+                    datas: null
+                },
+                created: function() {
+                    this.name = api.pageParam.name
+                    this.datas = api.pageParam.data
+                    
+                    if (this.datas.address.indexOf('|')!=-1) {
+                        this.datas.address = this.datas.address.split('|')[0]
+                    } else {
+                        this.datas.address = this.datas.address
+                    }
+                    
+                },
+                methods: {
+                    goCompany: function () {
+                        api.openWin({
+                            name: 'productDetail',
+                            url: './product-detail.html',
+                            pageParam: {
+                                name: this.datas.company
+                            }
+                        });
+                    },
+                    goBack: function () {
+                        api.closeWin({
+                            name: 'pageDetail'
+                        });
+                    },
+                    goComplaint: function () {
+                        api.openWin({
+                            name: 'complain',
+                            url: './complain.html'
+                        });
+                    }
+                }
+            })
+            
+        }
+            
+    </script>
+</body>
+</html>

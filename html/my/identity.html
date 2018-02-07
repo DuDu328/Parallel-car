@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../../css/my.css">
+    <link rel="stylesheet" type="text/css" href="../../css/style.css">
+
+</head>
+<body>
+	<div id="myHome">
+        <header class="header">
+            <span class="back" @click="goBack()"><img src="../../image/back.png"></span>
+            <span>{{title}}</span>
+        </header>
+        <ul class="my-menu mtno">
+        	<li class="clear"><span>经销商信息</span></li>
+            <li class="clear"><span>公司名称</span> <input type="text" name="" placeholder="请输入经销商名称"></li>
+            <li class="clear"><span>营业执照</span> <i class="text-orange">点击上传</i></li>
+            <li class="clear"><span>地址</span> <input type="text" name="" placeholder="请输入详细地址"></li>
+            <li class="clear"><span>电话</span> <input type="text" name="" placeholder="请输入联系电话"></li>
+
+        </ul>
+        <div class="prompt2"><span class="hui">支持字母、数字、特殊符号，6-12位</span><span class="orange">忘记密码</span></div>
+        <div class="btn-yellow" style="margin-top:50px;">确认并提交</div>
+    </div>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript">
+// apiready = function(){
+    new Vue({
+        el:'#myHome',
+        data:{
+            aa:'1',
+            title:'身份认证'
+        },
+        mounted: function(){
+            
+        },
+        methods:{
+            goEditPwd:function(){
+                api.openFrame({
+                    name:'goEditPwd',
+                    url:'./editPwd'
+                })
+
+            },
+            goBack: function () {
+                api.closeWin({
+                    name: 'identity'
+                });
+            }
+        }
+    })
+// }
+    
+</script>
+
+</body>

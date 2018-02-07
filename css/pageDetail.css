@@ -1,0 +1,140 @@
+
+#page {
+    width: 100%;
+    height: 100%;
+    background: #e6e6e6;
+    display: flex;
+    flex-direction: column;
+}
+.page-title {
+    padding: 10px;
+}
+    
+.page-title h2 {
+    font-size: 14px;
+} 
+.page-title p {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.page-title .price {
+    color: orange;
+}
+.page-title .time {
+    color: #999;
+}
+.wrap {
+    width: 100%;
+    overflow-y: scroll;
+    margin-top: 50px;
+}
+.page-title, .banner, .info, .company-address, .callBtn {
+    background: #fff;
+}
+.banner {
+    width: 100%;
+}
+.banner dl dt img {
+    width: 100%;
+    height: 100%;
+}
+.banner dl dd {
+    color: #666;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+.banner p {
+    line-height: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: border-box;
+}
+.info {
+    padding: 10px;
+}
+.info h3 {
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+.info h3 img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+.info ul {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+.info ul li {
+    /*width: 25%;*/
+    line-height: 25px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.info ul li:nth-child(1), .info ul li:nth-child(5), .info ul li:nth-child(4) {
+    width: 20%;
+}
+.info ul li:nth-child(2), .info ul li:nth-child(6) {
+    width: 30%;
+}
+.info ul li:nth-child(3) {
+    width: 30%;
+}
+.info ul li span, .info ul li b {
+    display: block;
+}
+.info ul li span {
+    color: #666;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.company-address {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.company-address dl {
+    display: flex;
+    align-items: center;
+}
+.company-address dt {
+    width: 77px;
+    height: 77px;
+}
+.company-address dd {
+    margin-left: 10px;
+    line-height: 45px;
+}
+.company-address dt img {
+    width: 100%;
+    height: 100%;
+}
+.callBtn {
+    width: 90%;
+    height: 50px;
+    background: #eaa33e;
+    color: #fff;
+    margin: 25px auto;
+    border-radius: 5px;
+    line-height: 50px;
+}
+.callBtn span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.callBtn img {
+    width: 20px;
+    height: 20px;
+}

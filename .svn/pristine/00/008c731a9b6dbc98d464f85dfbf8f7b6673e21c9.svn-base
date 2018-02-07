@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/common.css" />
+    <link rel="stylesheet" type="text/css" href="../css/complain.css">
+    <style type="text/css">
+    	body{
+    		background: #eee;
+    	}
+    </style>
+
+</head>
+<body>
+	<div id="app1">
+		<div  class="cont">
+			<h1>[{{content.carType}}] {{content.kuan}} {{content.carSeries}} {{content.pailiang}}{{content.zuo}}{{content.color}}{{content.rongliang}}</h1>
+			<div class="clear">
+				<span class="d-money fl">{{content.money}}万</span>
+				<span class="hui-date fr">{{content.date}}2</span>
+			</div>
+		</div>
+		<div class="s-cont">
+			<h2>车辆信息</h2>
+			<ul class="d-info">
+				<li>
+					<p>年代</p>
+					<p>{{content.rongliang}}</p>
+				</li>
+				<li>
+					<p>版本</p>
+					<p>{{content.carSeries}}</p>
+				</li>
+				<li>
+					<p>颜色</p>
+					<p>{{content.color}}</p>
+				</li>
+				<li>
+					<p>排量</p>
+					<p>2011</p>
+				</li>
+				<li>
+					<p>所在地</p>
+					<p>2011</p>
+				</li>
+				<li>
+					<p>状态</p>
+					<p>2011</p>
+				</li>
+				<li>
+					<p>提车方式</p>
+					<p>2011</p>
+				</li>
+			</ul>
+		</div>
+		<div class="cont">
+			<div class="pic">
+				<img src="../image/bg1.png">
+			</div>
+			<p class="pic-tit"> （实景图）</p>
+			<p class="pic-content">说明：手动豪华版，想买加价</p>
+		</div>
+		<div class="btn-group">
+			<p>编辑</p>
+			<p @click="deleteCar(content.goodsId)">删除</p>
+			<p @click="offShelf(content.goodsId)">下架 </p>
+		</div>
+	   
+	</div>
+	  
+</body>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+
+    apiready = function(){
+
+    	$vue = new Vue({
+    		el:'#app1',
+    		data:{
+    			content:'',
+    			goodsId:api.pageParam.goodsId
+			},
+			mounted:function(){
+				this.getContent()
+			},
+			methods:{
+				getContent: function() {
+					this.$http.post(
+						'http://172.10.1.14:3001/goodsDetail',
+						{goodsId: this.goodsId})
+					.then(function(res) {
+						console.log(res.data)
+						this.content = res.data
+					})
+				},
+				deleteCar: function(id){
+					this.$http.post('http://172.10.1.14:3001/deleteCar',{
+						goodsId: this.goodsId
+					}).then(function(res){
+						if(res.data.code==1){
+							alert(res.data.msg)
+							api.sendEvent({
+								name:'delete'
+							})
+							api.closeWin()
+						}else{
+							alert(res.data.error)
+						}
+					},function(err){
+						alert(err.msg)
+					})
+
+				},
+				//下架
+				offShelf: function(id){
+					this.$http.post('http://172.10.1.14:3001/offShelf',{
+						goodsId: this.goodsId
+					}).then(function(res){
+						if(res.data.code==1){
+							alert(res.data.msg)
+							api.sendEvent({
+								name:'delete'
+							})
+							api.closeWin()
+						}else{
+							alert(res.data.error)
+						}
+					},function(err){
+						alert(err.msg)
+					})
+
+				}
+			}
+			
+    	})
+			
+			
+    };
+</script>
+</html>

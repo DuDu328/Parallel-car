@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>云API</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/swiper-3.4.2.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+</head>
+<body>
+    <div id="Home">
+        <header id="header" class="header">
+            <div class="choseArea">
+                {{area}}<img src="../image/arrow-down-white.png" alt="">
+            </div>
+            <div class="searchInput">
+                <input type="text" maxlength="50" placeholder="大路网平行进口车型">
+                <img src="../image/search_icon.png" alt="" class="search_icon">
+            </div>
+        </header>
+        <div id="home" class="mt10">
+            <div id="banner">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="../image/banner.png" alt=""></div>
+                        <div class="swiper-slide"><img src="../image/banner.png" alt=""></div>
+                        <div class="swiper-slide"><img src="../image/banner.png" alt=""></div>
+                    </div>
+                </div>
+            </div>
+            <div class="sub-menu">
+                <dl>
+                    <dt> <img src="../image/tg_icon.png" alt=""></dt>
+                    <dd>团购</dd>
+                </dl>
+                <dl>
+                    <dt> <img src="../image/sjq_icon.png" alt=""></dt>
+                    <dd>赏金券</dd>
+                </dl>
+                <dl>
+                    <dt> <img src="../image/wl_icon.png" alt=""></dt>
+                    <dd>物流</dd>
+                </dl>
+                <dl>
+                    <dt> <img src="../image/jr_icon.png" alt=""></dt>
+                    <dd>金融</dd>
+                </dl>
+            </div>
+            <!-- news新闻 -->
+            <div class="news mt10">
+                <div class="tip"><img src="../image/tip.png" alt=""></div>
+                <div class="marguee">
+                    <marquee direction="left" alternate scrolldelay="50" class="marqueeBox">
+                        <span>1、大路网设立100亿平行车专项基金，打造中国最大平行</span>
+                        <span>2、大路网设立100亿平行车专项基金，打造中国最大平行</span>
+                        <span>3、大路网设立100亿平行车专项基金，打造中国最大平行</span>
+                    </marquee>
+                </div>
+                <div class="mores">更多</div>
+            </div>
+            <!-- 热销品牌 -->
+            <div class="hot brand mt10">
+                <div class="titles">
+                    <span class="fire">热销品牌</span>
+                    <span class="w25"><img src="../image/arrow-right-gray.png" alt=""></span>
+                </div>
+                <div class="brand-list">
+                    <dl v-if="brand.length>0" v-for="items in brand" @click="goHome(items.ID)">
+                        <dt> <img :src="items.logo" alt=""> </dt>
+                        <dd>{{items.name}}</dd>
+                    </dl>
+                </div>
+            </div>
+            <!-- 热门推荐 -->
+            <div class="hot recommend mt10">
+                <div class="titles">
+                    <span class="remond">热门推荐</span>
+                    <span class="w25"><img src="../image/arrow-right-gray.png" alt=""></span>
+                </div>
+                <div class="recommend-list" v-if="hotCar.car">
+                    <dl v-for="items in hotCar.car[0].models" @click="goDetail(items)">
+                        <dt> <img :src="items.img" alt=""> </dt>
+                        <dd>
+                            <p>{{items.edition}} {{hotCar.car[0].name}} {{items.car}} {{items.name}} {{items.displacement}} {{items.year}}款 {{items.seat}}座 {{items.chooseColor}}</p>
+                            <p class="address">{{items.address}}</p>
+                            <p class="price">¥{{items.price}}万</p>
+                        </dd>
+                    </dl>
+                    <dl v-for="items in hotCar.car[3].models" @click="goDetail(items)">
+                        <dt> <img :src="items.img" alt=""> </dt>
+                        <dd>
+                            <p>{{items.edition}} {{hotCar.car[3].name}} {{items.car}} {{items.name}} {{items.displacement}} {{items.year}}款 {{items.seat}}座 {{items.chooseColor}}</p>
+                            <p class="address">{{items.address}}</p>
+                            <p class="price">¥{{items.price}}万</p>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="down">到底了！</div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../script/api.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+    <!-- <script type="text/javascript" src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script> -->
+    <script src="../script/swiper-3.4.2.min.js"></script>
+    <script type="text/javascript">
+        
+        apiready = function () {
+            let width = api.winWidth;
+            let banner = $api.byId('banner');
+            let css =  `width:${width}px`;
+            $api.css(banner, css)
+            new Vue({
+                el: '#Home',
+                data: {
+                    area: '北京',
+                    brand: [],
+                    hotCar: [],
+                    auto: true
+                },
+                created: function () {
+                    this.$http.post('http://172.10.1.63:8000/brand', {id: 0}).then(function (res) {
+                        this.brand = res.data.brand
+                        this.hotCar = res.data.brand[2]
+                    })
+
+                },
+                mounted: function () {
+                    this.fetch()
+                },
+                methods: {
+                    fetch: function () {
+                        var swiper = new Swiper('.swiper-container', {
+                            loop: true,
+                            centeredSlides: true,
+                            autoplay: 2500,
+                            autoplayDisableOnInteraction : false,
+                            onTouchStart: function(swiper) {
+                                    api.setFrameAttr({
+                                        name: api.frameName,
+                                        bounces: false
+                                    });
+                                },
+                            onTouchEnd: function(swiper) {
+                                    api.setFrameAttr({
+                                        name: api.frameName,
+                                        bounces: true
+                                    });
+                                }
+                            })
+                    },
+                    goHome: function (ID) {
+                        api.openWin({
+                            name: 'find',
+                            url: './Find/find.html',
+                            pageParam: {
+                                ID: ID
+                            }
+                        });
+                    },
+                    goDetail: function (items) {
+                        api.openWin({
+                            name: 'pageDetail',
+                            url: './Find/pageDetail.html',
+                            pageParam: {
+                                data: items
+                            }
+                        });
+                    }
+                }
+            })
+
+        }
+    </script>
+</body>
+</html>

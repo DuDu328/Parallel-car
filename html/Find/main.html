@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>云API</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/main.css"/>
+</head>
+<body>
+    <div id="App">
+        <header class="header">
+            <span class="back"><img src="../image/back.png"></span>
+            <span>找车</span>
+        </header>
+        <div class="find-menu mb10">
+            <p>所在地 <span class="triangle" @click="getArea()"></span></p>
+            <p>版本 <span class="triangle" @click="getEdition()"></span></p>
+            <p>状态 <span class="triangle" @click="getStatus()"></span></p>
+            <p>排序 <span class="triangle" @click="getOrder()"></span></p>
+        </div>
+        <div class="area-list" v-if="areas">
+            <ul>
+                <li v-for="item in listData.area" @click="getProduct(item.id,'areas')">{{item.name}}</li>
+            </ul>
+        </div>
+        <div class="edition-list" v-if="editions">
+            <ul>
+                <li v-for="item in listData.edition" @click="getProduct(item.id,'editions')">{{item.name}}</li>
+            </ul>
+        </div>
+        <div class="status-list" v-if="statuss">
+            <ul>
+                <li v-for="item in listData.status" @click="getProduct(item.id,'statuss')">{{item.name}}</li>
+            </ul>
+        </div>
+        <div class="order-list" v-if="orders">
+            <ul>
+                <li v-for="item in listData.order" @click="getProduct(item.id,'orders')">{{item.name}}</li>
+            </ul>
+        </div>
+        <!-- 搜索结果-->
+        <div class="searchResult">
+            <ul class="resultList">
+                <li v-if="product.length" v-for="items in product">
+                    <h3 class="title">{{items.edition}} {{items.car}} {{items.name}} {{items.displacement}} {{items.year}}款 {{items.seat}}座 {{items.chooseColor}}</h3>
+                    <p class="address">{{items.address}}</p>
+                    <p class="company" @click="openDetail(product,items.company,items.id)">{{items.company}}</p>
+                    <div class="price">¥{{items.price}}万</div>
+                    <div class="time">{{items.shelfTime}}</div>    
+                </li>
+            </ul> 
+        </div>
+    </div>
+    <script type="text/javascript" src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+    <script type="text/javascript">
+        apiready = function () {
+            new Vue({
+                el: '#App',
+                data: {
+                    listData: {
+                        area: null,
+                        edition: null,
+                        status: null,
+                        order: null
+                    },
+                    areas: false,
+                    editions: false,
+                    statuss: false,
+                    orders: false,
+                    product: null
+                },
+                created: function () {
+                    this.$http.post('http://172.10.1.63:8000/find').then(function(res) {
+                    // this.$http.post('http://192.168.0.109:8000/find').then(function(res) {
+                        this.listData = res.data
+                        this.listData.area = this.listData.area
+                        this.listData.edition = this.listData.edition
+                           this.listData.status = this.listData.status
+                        this.listData.order = this.listData.order
+                    })
+                    this.$http.post('http://172.10.1.63:8000/Product', {status: 0}).then(function(res) {
+                    // this.$http.post('http://192.168.0.109:8000/Product', {status: 0}).then(function(res) {
+                        this.product = res.data.product
+                    })
+                    // this.$http.get('http://localhost:8000/find').then(function(res) {
+                    //     this.listData = res.data
+                    //     this.listData.area = this.listData.area
+                    //     this.listData.edition = this.listData.edition
+                    //     this.listData.status = this.listData.status
+                    //     this.listData.order = this.listData.order
+                    // })
+                    // this.$http.get('http://localhost:8000/Product').then(function(res) {
+                    //     this.product = res.data.product
+                    // })
+                },
+                methods: {
+                    getArea: function () {
+                        this.areas = !this.areas
+                    },
+                    getEdition: function () {
+                        this.editions = !this.editions
+                    },
+                    getStatus: function () {
+                        this.statuss = !this.statuss
+                    },
+                    getOrder: function () {
+                        this.orders = !this.orders
+                    },
+                    getProduct: function (id, type) {
+                        // this[type] = false;
+                        // this.$http.get('http://localhost:8000/Product?area=' + id).then(function(res) {
+                        //     if (typeof(res.data) === 'string') {
+                        //         this.product = null;
+                        //     } else {
+                        //         this.product = res.data;
+                        //     }
+                        // })
+                        this[type] = false;
+                        this.$http.post('http://172.10.1.63:8000/Product', {
+                        // this.$http.post('http://192.168.0.109:8000/Product', {
+                            area: id
+                        }).then(function(res) {
+                            if (typeof(res.data) === 'string') {
+                                this.product = null;
+                            } else {
+                                this.product = res.data;
+                            }
+                        })
+                    },
+                    openDetail: function(product, company, id) {
+                        api.openWin({
+                            name: 'product-detail',
+                            url: './product-detail.html',
+                            pageParam: {
+                                name: product,
+                                company: company,
+                                Id: id
+                            }
+                        });
+                    }
+                }
+            })
+        }
+    </script>
+</body>
+</html>

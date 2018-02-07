@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>查找车源</title>
+    <link rel="stylesheet" href="../../css/common.css">
+    <link rel="stylesheet" href="../../css/reset.css">
+    <link rel="stylesheet" href="../../css/public.css">
+    <link rel="stylesheet" href="../../css/realease-car.css">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+    <link rel="stylesheet" href="../../css/swiper-4.1.0.min.css">
+    <script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue-resource/1.3.4/vue-resource.js"></script>
+    <script src="../../script/swiper-4.1.0.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="header rel">
+            <span @click="close()" class="ml10">取消</span>
+            <span style="margin-left:113px">选择照片</span>
+            <span style="right: 10px" @click="makeSure()" class="pos-absolute">确认</span>
+        </div>
+        <div class="explain">
+            <span class="text-888 f13">建议上传照片尺寸16:9</span>
+        </div>
+        <div class="img-list ">
+            <input id="files" @change="address(this)" style="display:none" name="files" type="file" >
+            <div  class="box1 inblock">
+                <img @click="changeImg(0)" class="img-value" :class=isActive1 :src=src1 alt="">
+                <div @click="deleImg(0)" class="del-img inblock">
+                    <img style="width:22px;height:22px" src="../../image/icon_close.png" alt="">
+                </div>
+            </div>
+            <div class="box2 inblock">
+                <img @click="changeImg(1)" class="img-value" :class=isActive2 :src=src2 alt="">
+                <div @click="deleImg(1)" class="del-img inblock">
+                    <img style="width:22px;height:22px" src="../../image/icon_close.png" alt="">
+                </div>
+            </div>
+            <div class="box1 inblock">
+                <img @click="changeImg(2)" class="img-value" :class=isActive3 :src=src3 alt="">
+                <div @click="deleImg(2)" class="del-img inblock">
+                    <img style="width:22px;height:22px" src="../../image/icon_close.png" alt="">
+                </div>
+            </div>
+<!--             <div class="change-box inblock" v-for="(pic,index) in img">
+                <img @click="changeImg(index)" class="add-img" :src=pic alt="">
+            </div>
+            <div class="add-box2 inblock" v-for="n in 2" v-if="img.length == 1">
+                <img @click="addImg(n)" class="add-img2" src="../../image/icon_add.png" alt="">
+            </div>
+            <div class="add-box1 inblock" v-if="img.length == 2">
+                <img @click="addImg(2)" class="add-img2" src="../../image/icon_add.png" alt="">
+            </div>
+            <div class="add-box1 inblock" v-for="n in 3" v-if="img.length == 0">
+                <img @click="addImg(n-1)" class="add-img2" src="../../image/icon_add.png" alt="">
+            </div> -->
+        </div>
+        <div :class="isShow" class="choose-type">
+            <div @click="paltform()" class="sin-choose">从平台选择照片</div>
+            <div @click="libary()" class="sin-choose">从相册选/拍照</div>
+            <div @click="cancel()" class="sin-choose">取消</div>
+
+        </div>
+    </div>
+    <script>
+        apiready = function(){
+            new Vue({
+                el: '#app',
+                data: {
+                    img: [],
+                    buttonId: "",
+                    isShow: "isHidden",
+                    src1: "../../image/icon_add.png",
+                    src2: "../../image/icon_add.png",
+                    src3: "../../image/icon_add.png",
+                    isActive1: "add-img2",
+                    isActive2: "add-img2",
+                    isActive3: "add-img2"
+                },
+                beforeMount: function(e) {
+                    this.img = api.pageParam.img;
+                    if(this.img) {
+                        if(this.img.length == 1) {
+                            this.src1 = this.img[0]
+                            this.isActive1 = "add-img"
+                        } else if (this.img.length == 2) {
+                            this.src1 = this.img[0]
+                            this.isActive1 = "add-img"
+                            this.src2 = this.img[1]
+                            this.isActive2 = "add-img"
+                        } else if (this.img.length == 3) {
+                            this.src1 = this.img[0]
+                            this.isActive1 = "add-img"
+                            this.src2 = this.img[1]
+                            this.isActive2 = "add-img"
+                            this.src3 = this.img[2]
+                            this.isActive3 = "add-img"
+                        } 
+                    }
+
+                },
+                mounted: function(e) {
+                    var that = this;
+                    api.addEventListener({
+                        name: 'platImg'
+                    }, function(ret, err) {
+                        if(that.buttonId === 0) {
+                            that.src1=ret.value.platImg
+                            that.isActive1 = "add-img"
+                        }else if (that.buttonId === 1){
+                            that.src2=ret.value.platImg
+                            that.isActive2 = "add-img"
+                        } else {
+                            that.src3=ret.value.platImg
+                            that.isActive3 = "add-img"
+                        }
+                    });
+                },
+                methods: {
+                    choose: function(e) {
+                        this.value = e;
+                    },
+                    changeImg: function(index) {
+                        this.isShow = "isShow";
+                        this.buttonId = index;
+                    },
+                    deleImg: function(index) {
+                        if(index === 0) {
+                            this.src1="../../image/icon_add.png";
+                            this.isActive1 = "add-img2"
+                        }else if (index === 1){
+                            this.src2="../../image/icon_add.png";
+                            this.isActive2 = "add-img2"
+                        } else {
+                            this.src3="../../image/icon_add.png";
+                            this.isActive3 = "add-img2"
+                        }
+                    },
+                    cancel: function() {
+                        this.isShow = "isHidden";
+                    },
+                    libary: function() {
+                        $("input").trigger("click");
+                        this.isShow = "isHidden";
+                    },
+                    address: function(index) {
+                        if(this.buttonId === 0) {
+                            this.src1=$("input").val();
+                            this.isActive1 = "add-img"
+                        }else if (this.buttonId === 1){
+                            this.src2=$("input").val();
+                            this.isActive2 = "add-img"
+                        } else {
+                            this.src3=$("input").val();
+                            this.isActive3 = "add-img"
+                        }
+                    },
+                    paltform: function() {
+                        this.isShow = "isHidden"
+                        api.openFrame({
+                            name: 'platform',
+                            url: './platform.html',
+                        }); 
+                    },
+                    makeSure: function() {
+                        let imgArr = [];
+                        let imgArr2 = [this.src1, this.src2, this.src3]
+                        for(let i = 0; i < imgArr2.length; i++) {
+                            if(imgArr2[i] !== "../../image/icon_add.png") {
+                                imgArr.push(imgArr2[i])
+                                console.log(imgArr2[i])
+                            }
+                        }
+                        api.sendEvent({
+                            name: 'img',
+                            extra: {
+                                img: imgArr
+                            }
+                        });
+                        api.closeFrame({
+                            name: 'choose',
+                        });
+                    },
+                    close: function(){
+                        api.closeFrame({
+                            name: 'choose',
+                        });   
+                    }
+                }
+            })
+}
+</script>
+</body>
+</html>

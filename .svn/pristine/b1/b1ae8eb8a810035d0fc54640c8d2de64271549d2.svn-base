@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/sell.css">
+
+</head>
+<body >
+	<div id="sellmain" class="sell">
+		<div class="fiexed">
+			<div class="sell-head-main">
+				<ul class="sell-head">
+					<li :class="{'on': selectIndex==0}" @click="goodsFilter(0,0)"><span>出售中</span></li>
+					<li :class="{'on': selectIndex==1}" @click="goodsFilter(1,1)"><span>已下架</span></li>
+				</ul>
+			</div>
+			<div class="btn-yellow" @click="goRealeaseCar()"><img src=""> 发布车源</div>
+			<p class="pub-text">车源信息（{{dataNum}}）</p>
+		</div>
+		<div class="pub-cont">
+			
+			<div class="pub-list">
+				<dl v-for="list in filterList" @click="goDetail(list.goodsId)">
+					<dt>
+						<p class="pub-tit">[{{list.carType}}] {{list.carSeries}} {{list.pailiang}}l {{list.kuan}} {{list.zuo}} {{list.color}}</p> 
+						<p class="pub-money">{{list.money}}万</p>
+					</dt>
+					<dd>
+						<div class="pub-seat">
+							{{list.port}} | {{list.haiwai}} | {{list.color}} | {{list.rongliang}}
+						</div>
+						<p class="pub-date">{{list.date}}</p>
+					</dd>
+				</dl>
+				
+			</div>
+		</div>
+		
+	   
+	</div>
+	  
+</body>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript">
+	// function goPage(){
+	// 	$api.openWin({
+	// 		name:'aa',
+	// 		url:'./aa.html'
+	// 	})
+	// }
+    apiready = function(){
+
+ 	$vue = new Vue({
+ 		el:'#sellmain',
+ 		data:{
+ 			selectIndex:0,
+ 			filterList:'',
+ 			filterId:'0',
+ 			dataNum:'0'
+ 		},
+ 		mounted: function(){
+ 			let _this = this;
+ 			this.filterM();
+ 			api.addEventListener({
+ 				name:'delete'
+ 			},function(ret){
+ 				if(ret){
+ 					_this.filterM();
+ 				}
+ 				
+ 			})
+ 		},
+ 		methods:{
+ 			//获取数据
+ 			filterM:function(){
+ 				this.$http.post('http:172.10.1.14:3001/carManager',{filterId:this.filterId}).then(function(res){
+ 					console.log(res.data)
+ 					this.dataNum=res.data.length
+ 					this.filterList = res.data
+ 				})
+ 			},
+ 			//选择出售中，下架
+ 			goodsFilter: function (index, filterId) {
+ 				this.selectIndex = index;
+ 				this.filterId = filterId
+ 				this.filterM()
+ 				
+ 			},
+ 			//跳转到详情
+ 			goDetail: function(id){
+ 				api.openWin({
+ 					name:'seeDetail',
+ 					url:'./sell-detail.html',
+ 					pageParam:{
+ 						goodsId: id
+ 					}
+ 				})
+ 			},
+ 			//发布车源
+ 			goRealeaseCar: function(){
+ 				api.openWin({
+ 					name: 'realeasecar',
+ 					url: './realease-car/realease-car.html'
+ 				})
+ 			}
+
+ 		}
+ 	})
+    	
+			
+    };
+</script>
+</html>
